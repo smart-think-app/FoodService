@@ -10,5 +10,7 @@ func FoodRouter(e *echo.Echo) {
 	{
 		foodRouter.GET("/", food_controller.SearchFoodController)
 		foodRouter.GET("/:id", food_controller.GetDetailFoodController)
+		foodRouter.POST("/", food_controller.AddFoodController)
+		foodRouter.POST("/recipe", food_controller.AddFoodRecipeController)
 	}
 }
