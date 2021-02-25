@@ -15,6 +15,7 @@ func RunAPI() {
 
 	// Routes
 	router.FoodRouter(e)
+	router.DrinkRouter(e)
 	// Start server
 	e.Logger.Fatal(e.Start(":3001"))
 }
