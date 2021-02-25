@@ -19,3 +19,17 @@ func GetDetailDrinkController(c echo.Context) error {
 		Data: "Get Detail Drink",
 	})
 }
+
+func AddDrinkController(c echo.Context) error {
+	return c.JSON(http.StatusOK, common_model.SuccessResponseDto{
+		Code: http.StatusOK,
+		Data: "Add Drink",
+	})
+}
+
+func AddDrinkRecipeController(c echo.Context) error {
+	return c.JSON(http.StatusOK, common_model.SuccessResponseDto{
+		Code: http.StatusOK,
+		Data: "Add Drink Recipe",
+	})
+}
