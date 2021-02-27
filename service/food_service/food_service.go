@@ -10,10 +10,14 @@ import (
 
 type FoodServiceModel struct {
 	IFoodRepository repository.IFoodRepository
+	//IRecipeRepository repository.IRecipeRepository
 }
 
-func NewFoodService(iFoodRepository repository.IFoodRepository) *FoodServiceModel {
-	return &FoodServiceModel{IFoodRepository: iFoodRepository}
+func NewFoodService(iFoodRepository repository.IFoodRepository, iRecipeRepository repository.IRecipeRepository) *FoodServiceModel {
+	return &FoodServiceModel{
+		IFoodRepository: iFoodRepository,
+		//IRecipeRepository: iRecipeRepository
+	}
 }
 
 func (s *FoodServiceModel) AddFoodService(request request_model.AddFoodBodyRequestDto) error {

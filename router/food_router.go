@@ -13,6 +13,6 @@ func FoodRouter(db *sql.DB, e *echo.Echo) {
 		foodRouter.GET("/", foodCls.SearchFoodController)
 		foodRouter.GET("/:id", foodCls.GetDetailFoodController)
 		foodRouter.POST("/", foodCls.AddFoodController)
-		foodRouter.POST("/recipe", foodCls.AddFoodRecipeController)
+		foodRouter.POST("/:id/recipe", foodCls.AddFoodRecipeController)
 	}
 }

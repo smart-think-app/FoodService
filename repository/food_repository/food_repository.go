@@ -27,3 +27,18 @@ func (r *foodRepository) Add(foodSchema schema_model.FoodSchemaModel) (int, erro
 
 	return foodId, nil
 }
+
+func (r *foodRepository) CheckById(foodId int) (bool, error) {
+
+	var count int64
+	err := r.Db.QueryRow("select count(id) from \"Food\" where id = $1", foodId).Scan(&count)
+
+	if err != nil {
+		return false, err
+	}
+
+	if count > 0 {
+		return true, nil
+	}
+	return false, nil
+}
