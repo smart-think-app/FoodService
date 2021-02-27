@@ -42,3 +42,7 @@ func (r *foodRepository) CheckById(foodId int) (bool, error) {
 	}
 	return false, nil
 }
+
+func (r *foodRepository) AddMany(foods []schema_model.FoodSchemaModel) error {
+	return nil
+}

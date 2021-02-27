@@ -32,3 +32,7 @@ func (r *recipeRepository) Add(recipe schema_model.RecipeSchemaModel) error {
 	}
 	return nil
 }
+
+func (r *recipeRepository) AddMany(model []schema_model.RecipeSchemaModel) error {
+	return nil
+}

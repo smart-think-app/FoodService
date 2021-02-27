@@ -51,7 +51,7 @@ func (cls FoodControllerClass) AddFoodController(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, common_model.SuccessResponseDto{
 		Code: http.StatusOK,
-		Data: "Add Food",
+		Data: "Success",
 	})
 }
 
@@ -60,16 +60,16 @@ func (cls FoodControllerClass) AddFoodRecipeController(c echo.Context) error {
 	foodIdParam := c.Param("id")
 	foodId, errParse := strconv.Atoi(foodIdParam)
 	if errParse != nil {
-		return c.JSON(http.StatusBadRequest, common_model.SuccessResponseDto{
-			Code: http.StatusBadRequest,
-			Data: "Invalid Food",
+		return c.JSON(http.StatusBadRequest, common_model.ErrorResponseDto{
+			Code:    http.StatusBadRequest,
+			Message: "Invalid Food",
 		})
 	}
 	var request request_model.AddRecipeRequestDto
 	if errBody := c.Bind(&request); errBody != nil {
-		return c.JSON(http.StatusBadRequest, common_model.SuccessResponseDto{
-			Code: http.StatusBadRequest,
-			Data: "Invalid Body",
+		return c.JSON(http.StatusBadRequest, common_model.ErrorResponseDto{
+			Code:    http.StatusBadRequest,
+			Message: "Invalid Body",
 		})
 	}
 	RecipeRepository := recipe_repository.NewRecipeRepository(cls.Db)
@@ -87,6 +87,6 @@ func (cls FoodControllerClass) AddFoodRecipeController(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, common_model.SuccessResponseDto{
 		Code: http.StatusOK,
-		Data: "Add Food Recipe",
+		Data: "Success",
 	})
 }
