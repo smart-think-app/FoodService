@@ -3,26 +3,32 @@ package food_controller
 import (
 	"FoodService/model/api_model/request_model"
 	"FoodService/model/common_model"
+	"FoodService/repository/food_repository"
 	"FoodService/service/food_service"
+	"database/sql"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
-func SearchFoodController(c echo.Context) error {
+type FoodControllerClass struct {
+	Db *sql.DB
+}
+
+func (cls FoodControllerClass) SearchFoodController(c echo.Context) error {
 	return c.JSON(http.StatusOK, common_model.SuccessResponseDto{
 		Code: http.StatusOK,
 		Data: "Search Food",
 	})
 }
 
-func GetDetailFoodController(c echo.Context) error {
+func (cls FoodControllerClass) GetDetailFoodController(c echo.Context) error {
 	return c.JSON(http.StatusOK, common_model.SuccessResponseDto{
 		Code: http.StatusOK,
 		Data: "Get Detail Food",
 	})
 }
 
-func AddFoodController(c echo.Context) error {
+func (cls FoodControllerClass) AddFoodController(c echo.Context) error {
 	var request request_model.AddFoodBodyRequestDto
 
 	if err := c.Bind(&request); err != nil {
@@ -31,8 +37,8 @@ func AddFoodController(c echo.Context) error {
 			Message: "Bad Request",
 		})
 	}
-
-	foodSv := food_service.NewFoodService()
+	foodRepository := food_repository.NewFoodRepository(cls.Db)
+	foodSv := food_service.NewFoodService(foodRepository)
 	if err := foodSv.AddFoodService(request); err != nil {
 		return c.JSON(http.StatusInternalServerError, common_model.ErrorResponseDto{
 			Code:    http.StatusInternalServerError,
@@ -45,7 +51,7 @@ func AddFoodController(c echo.Context) error {
 	})
 }
 
-func AddFoodRecipeController(c echo.Context) error {
+func (cls FoodControllerClass) AddFoodRecipeController(c echo.Context) error {
 	return c.JSON(http.StatusOK, common_model.SuccessResponseDto{
 		Code: http.StatusOK,
 		Data: "Add Food Recipe",

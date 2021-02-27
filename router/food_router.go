@@ -2,15 +2,17 @@ package router
 
 import (
 	"FoodService/controller/food_controller"
+	"database/sql"
 	"github.com/labstack/echo/v4"
 )
 
-func FoodRouter(e *echo.Echo) {
+func FoodRouter(db *sql.DB, e *echo.Echo) {
+	foodCls := food_controller.FoodControllerClass{Db: db}
 	foodRouter := e.Group("/food")
 	{
-		foodRouter.GET("/", food_controller.SearchFoodController)
-		foodRouter.GET("/:id", food_controller.GetDetailFoodController)
-		foodRouter.POST("/", food_controller.AddFoodController)
-		foodRouter.POST("/recipe", food_controller.AddFoodRecipeController)
+		foodRouter.GET("/", foodCls.SearchFoodController)
+		foodRouter.GET("/:id", foodCls.GetDetailFoodController)
+		foodRouter.POST("/", foodCls.AddFoodController)
+		foodRouter.POST("/recipe", foodCls.AddFoodRecipeController)
 	}
 }
