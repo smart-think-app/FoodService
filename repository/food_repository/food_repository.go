@@ -16,7 +16,7 @@ func NewFoodRepository(db *sql.DB) *foodRepository {
 
 func (r *foodRepository) Add(foodSchema schema_model.FoodSchemaModel) (int, error) {
 	foodId := 0
-	err := r.Db.QueryRow(`Insert Into Food(name , type_food ,status ,description , updated_date) values ($1,$2,$3,$4,$5) RETURNING Id`,
+	err := r.Db.QueryRow(`Insert Into "Food"(name , type_food ,status ,description , updated_date) values ($1,$2,$3,$4,$5) RETURNING Id`,
 		foodSchema.Name, foodSchema.TypeFood, foodSchema.Status, foodSchema.Description, foodSchema.UpdatedDate).Scan(&foodId)
 	if err != nil {
 		return 0, err

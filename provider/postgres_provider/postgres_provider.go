@@ -7,7 +7,7 @@ import (
 )
 
 func ConnectPostgres() *sql.DB {
-	connStr := "postgres://postgres:postgres@localhost/FoodService?sslmode=verify-full"
+	connStr := "postgres://postgres:postgres@localhost/FoodService?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		fmt.Print(err.Error())

@@ -42,7 +42,7 @@ func (cls FoodControllerClass) AddFoodController(c echo.Context) error {
 	if err := foodSv.AddFoodService(request); err != nil {
 		return c.JSON(http.StatusInternalServerError, common_model.ErrorResponseDto{
 			Code:    http.StatusInternalServerError,
-			Message: "Internal Error",
+			Message: err.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, common_model.SuccessResponseDto{
