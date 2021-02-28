@@ -1,7 +1,13 @@
 package main
 
-import "FoodService/module_cmd"
+import (
+	"FoodService/module_cmd"
+	"fmt"
+)
 
 func main() {
-	module_cmd.RunAPI()
+	err := module_cmd.RunAPI()
+	if err != nil {
+		fmt.Print(err.Error())
+	}
 }

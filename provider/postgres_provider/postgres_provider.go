@@ -10,9 +10,9 @@ func ConnectPostgres() *sql.DB {
 	connStr := "postgres://postgres:postgres@localhost/FoodService?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		fmt.Print(err.Error())
+		fmt.Println(err.Error())
 		return nil
 	}
-	fmt.Print("Connect Postgres Success")
+	fmt.Println("Connect Postgres Success")
 	return db
 }
