@@ -16,7 +16,7 @@ type FoodFileControllerCls struct {
 func (cls FoodFileControllerCls) AddFoodByFileExcelController(c echo.Context) error {
 	NewFoodRepository := food_repository.NewFoodRepository(cls.Db)
 	FoodFileService := food_file_service.NewFoodFileService(NewFoodRepository)
-	err := FoodFileService.AddFoodByFileExcel()
+	err := FoodFileService.AddFoodByFileExcel(c)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, common_model.ErrorResponseDto{
 			Code:    http.StatusInternalServerError,
