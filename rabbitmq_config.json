@@ -2,5 +2,13 @@
   {
     "QueueName": "InsertMany",
     "Status": true
+  },
+  {
+    "QueueName": "Test",
+    "Status": true
+  },
+  {
+    "QueueName": "ExportFile",
+    "Status": true
   }
 ]
