@@ -10,7 +10,7 @@ import (
 
 func FoodRouter(db *sql.DB, rabbitmq *amqp.Channel, e *echo.Echo) {
 	foodCls := food_controller.FoodControllerClass{Db: db}
-	foodFileCls := food_file_controller.FoodFileControllerCls{Db: db}
+	foodFileCls := food_file_controller.FoodFileControllerCls{Db: db, RabbitMQ: rabbitmq}
 
 	foodRouter := e.Group("/food")
 	{

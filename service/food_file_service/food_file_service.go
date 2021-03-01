@@ -1,7 +1,9 @@
 package food_file_service
 
 import (
+	"FoodService/core/enums/food_enum/queue_name_enum"
 	"FoodService/core/type_utils"
+	"FoodService/interface/provider"
 	"FoodService/interface/repository"
 	"FoodService/model/api_model/request_model"
 	"bufio"
@@ -11,12 +13,16 @@ import (
 )
 
 type foodFileService struct {
-	IFoodRepository repository.IFoodRepository
+	IFoodRepository  repository.IFoodRepository
+	IRabbitMQSupport provider.IRabbitMQSupport
 }
 
-func NewFoodFileService(foodRepository repository.IFoodRepository) *foodFileService {
+func NewFoodFileService(
+	foodRepository repository.IFoodRepository,
+	iRabbitMQSupport provider.IRabbitMQSupport) *foodFileService {
 	return &foodFileService{
-		IFoodRepository: foodRepository,
+		IFoodRepository:  foodRepository,
+		IRabbitMQSupport: iRabbitMQSupport,
 	}
 }
 
@@ -68,5 +74,13 @@ func (sv *foodFileService) AddFoodByFileExcel(c echo.Context) error {
 	}
 	itemFood.Recipes = foodRecipe
 	foodList = append(foodList, itemFood)
+	dataString, errConvert := type_utils.ConvertStructToJSONString(foodList)
+	if errConvert != nil {
+		return errConvert
+	}
+	errPubQueue := sv.IRabbitMQSupport.Publish(queue_name_enum.InsertMany().Name, dataString)
+	if errPubQueue != nil {
+		return errPubQueue
+	}
 	return nil
 }
