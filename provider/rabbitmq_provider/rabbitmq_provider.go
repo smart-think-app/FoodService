@@ -1,6 +1,8 @@
 package rabbitmq_provider
 
 import (
+	"FoodService/consume/food_consume_service"
+	"FoodService/interface/consume"
 	"FoodService/model/common_model"
 	"encoding/json"
 	"fmt"
@@ -55,7 +57,8 @@ func QueueConsume(ch *amqp.Channel) error {
 	}
 	forever := make(chan bool)
 	for _, item := range queueConfigList {
-		errProcess := processQueue(item.QueueName, ch)
+		var consume food_consume_service.FoodConsume
+		errProcess := processQueue(item.QueueName, ch, consume)
 		if errProcess != nil {
 			fmt.Print(errProcess.Error())
 		}
@@ -65,7 +68,7 @@ func QueueConsume(ch *amqp.Channel) error {
 	return nil
 }
 
-func processQueue(queueName string, ch *amqp.Channel) error {
+func processQueue(queueName string, ch *amqp.Channel, consume consume.IBasicConsume) error {
 	msgs, err := ch.Consume(
 		queueName, "", false, false, false, false, nil)
 	if err != nil {
@@ -74,27 +77,15 @@ func processQueue(queueName string, ch *amqp.Channel) error {
 	go func() {
 		for d := range msgs {
 			fmt.Printf("Received a message from queue %s with message %s \n", queueName, d.Body)
+			err := consume.Run(d.Body)
+			if err != nil {
+				fmt.Printf(err.Error())
+			}
 			errAck := d.Ack(true)
 			if errAck != nil {
 				fmt.Print(errAck.Error())
 			}
 		}
 	}()
-	return nil
-}
-
-type RabbitMQSupport struct {
-	Ch *amqp.Channel
-}
-
-func (rb RabbitMQSupport) Publish(queueName string, body string) error {
-	err := rb.Ch.Publish("", queueName, false, false, amqp.Publishing{
-		ContentType: "text/plain",
-		Body:        []byte(body),
-	})
-	if err != nil {
-		return err
-	}
-
 	return nil
 }

@@ -35,8 +35,9 @@ func (s *FoodServiceModel) AddFoodService(request request_model.AddFoodBodyReque
 	}
 	if len(request.Recipes) > 0 {
 		fmt.Print(foodId)
-		for _, item := range request.Recipes {
-			errRecipe := s.IRecipeRepository.Add(schema_model.RecipeSchemaModel{
+		listSchemaRecipe := make([]schema_model.RecipeSchemaModel, len(request.Recipes))
+		for index, item := range request.Recipes {
+			listSchemaRecipe[index] = schema_model.RecipeSchemaModel{
 				FoodId:      foodId,
 				Name:        item.Name,
 				Description: item.Description,
@@ -44,11 +45,11 @@ func (s *FoodServiceModel) AddFoodService(request request_model.AddFoodBodyReque
 				Price:       item.Price,
 				Level:       item.Level,
 				Images:      strings.Join(item.Images, ","),
-			})
-			//TODO Push On Queue
-			if errRecipe != nil {
-				fmt.Print(errRecipe.Error())
 			}
+		}
+		errRecipe := s.IRecipeRepository.AddMany(listSchemaRecipe)
+		if errRecipe != nil {
+			fmt.Print(errRecipe.Error())
 		}
 	}
 	return nil
